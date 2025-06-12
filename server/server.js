@@ -1,21 +1,18 @@
-require('dotenv').config();
-const express = require('express');
-const dbConfig = require('./config/db');
+require('dotenv').config()
+const express = require('express')
 const router = require('./routes');
+const dbConfig = require('./config/db');
+const app = express()
 
-const app = express();
-const PORT = process.env.PORT || 8000;
-
-// Middleware
 app.use(express.json());
-
-// Database Connection
-dbConfig();
-
-// Routes
 app.use(router);
 
+dbConfig()
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+
+
+
+
+
+
+app.listen(3000 , ()=> {console.log("server is running on port 3000")})

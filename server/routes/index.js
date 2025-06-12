@@ -1,12 +1,17 @@
-const express = require('express');
-const apiRouter = require('./api'); 
-const router = express.Router();
+const express = require('express')
+const apiRouter = require('./api')
+const router = express.Router()
 
-router.use(process.env.API_BASE, apiRouter);
+router.use(process.env.BASE_URL, apiRouter)
 
 
-router.use((req, res) => {
-  res.status(404).json({ error: 'Page not found' });
-});
+router.use((req, res)=> {
+  res.status(404).send('page is not found')
+})
 
-module.exports = router;
+
+
+
+
+
+module.exports = router 
