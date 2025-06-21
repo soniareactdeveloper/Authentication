@@ -2,14 +2,18 @@ import React, { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { authService } from '../services/api';
 import { ToastContainer, toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const Otp = () => {
   const params = useParams().email;
-  console.log(params)
   const [otp, setOtp] = useState(Array(4).fill(""));
   const inputsRef = useRef([]);
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.value)
 
+
+  
+  // handle change
   const handleChange = (val, index) => {
     if (/^\d?$/.test(val)) {
       const newOtp = [...otp];
@@ -30,10 +34,17 @@ const Otp = () => {
     }
   };
 
-  const handleResend = () => {
-    toast.error('OTP resent!');
+  // handle resend
+  const handleResend = async () => {
+    try {
+      const res = await authService.resendOtp({email : params})
+      toast.success(res.message)
+    } catch (error) {
+      toast.error(error.response.data.error)
+    }
   };
 
+  // handle submit
  const handleSubmit = async (e) => {
   e.preventDefault();
   const enteredOtp = otp.join("");
@@ -53,6 +64,10 @@ const Otp = () => {
   }
 };
 
+
+ if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div

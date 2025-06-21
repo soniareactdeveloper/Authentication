@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { authService } from '../services/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 const Register = () => {
   const [regData, setRegData] = useState({
@@ -14,7 +15,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const navigate = useNavigate()
-
+   const user = useSelector((state) => state.auth.value)
 
   // form function
   const handleSubmit = async (e) => {
@@ -36,6 +37,10 @@ const Register = () => {
       toast.error(errMsg);
     }
   };
+
+  if(user){
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row overflow-hidden">

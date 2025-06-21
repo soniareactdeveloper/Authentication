@@ -1,18 +1,57 @@
-import React from 'react';
-import { Link } from 'react-router';
+import React, { useState } from 'react';
+import { Link, Navigate } from 'react-router';
+import { authService } from '../services/api';
+import { ToastContainer, toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { logUserData } from '../store/slices/authSlice';
+
 
 const Login = () => {
+  const [logData , setLogData] = useState({
+    email: "",
+    password: ""
+  })
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.auth.value)
+
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await authService.login(logData)
+      toast.success(res.message);
+      dispatch(logUserData(res.user))
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+  }
+
+ if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row overflow-hidden">
-      
+         {/* toast container */}
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              pauseOnHover
+              draggable
+              theme="light"
+            />
       {/* Left side - Login Form */}
       <div className="flex flex-col justify-center items-center w-full md:w-1/2 px-6 py-12 bg-white box-border">
         <h2 className="text-3xl font-bold mb-6 text-[#5b8506]">Login to your account</h2>
         
-        <form className="w-full max-w-sm">
+        <form onSubmit={handleSubmit} className="w-full max-w-sm">
           <label className="block mb-2 font-semibold" htmlFor="email">Email</label>
           <input
+            onChange={(e) => setLogData((prev) => ({ ...prev, email: e.target.value }))}
             type="email"
             id="email"
             placeholder="you@example.com"
@@ -21,6 +60,7 @@ const Login = () => {
 
           <label className="block mb-2 font-semibold" htmlFor="password">Password</label>
           <input
+            onChange={(e) => setLogData((prev) => ({ ...prev, password: e.target.value }))}
             type="password"
             id="password"
             placeholder="Enter your password"
