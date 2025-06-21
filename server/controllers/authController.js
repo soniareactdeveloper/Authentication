@@ -10,7 +10,7 @@ const fs = require('fs');
 // Registration controller
 const register = async (req, res) => {
   const { fullname, email, password, avatar } = req.body;
-  
+
   try {
     // Validate required fields
     if (!fullname) return res.status(400).json({ error: "fullname is required" });
@@ -84,7 +84,7 @@ const verifyEmail = async (req, res) => {
   }
 };
 
-// Reset OTP controller
+// Resend OTP controller
 const resendOtp = async (req, res) => {
   const { email } = req.body;
 

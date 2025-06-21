@@ -1,11 +1,16 @@
 import React, { useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
+import { authService } from '../services/api';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Otp = () => {
-  const [otp, setOtp] = useState(['', '', '', '']);
+  const params = useParams().email;
+  console.log(params)
+  const [otp, setOtp] = useState(Array(4).fill(""));
   const inputsRef = useRef([]);
+  const navigate = useNavigate();
 
-  const handleChange = (e, index) => {
-    const val = e.target.value;
+  const handleChange = (val, index) => {
     if (/^\d?$/.test(val)) {
       const newOtp = [...otp];
       newOtp[index] = val;
@@ -26,15 +31,45 @@ const Otp = () => {
   };
 
   const handleResend = () => {
-    alert('OTP resent!');
+    toast.error('OTP resent!');
   };
+
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  const enteredOtp = otp.join("");
+  if (enteredOtp.length < 4) {
+    toast.error("Please enter all 4 digits of the OTP.");
+    return;
+  }
+  try {
+    const res = await authService.otp({ email: params, otp: enteredOtp }); 
+    toast.success(res.message);
+
+    setTimeout(() => {
+      navigate("/login")
+    }, 1000);
+  } catch (error) {
+    toast.error(error.response?.data.error || error.message);
+  }
+};
+
 
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-cover bg-center px-4 sm:px-6 lg:px-8"
       style={{ backgroundImage: "url('/images/bg.jpg')" }}
     >
-      {/* Transparent container */}
+       {/* toast container */}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
       <div className="bg-none bg-opacity-30 backdrop-blur-md rounded-lg p-6 sm:p-8 max-w-md w-full text-center">
         <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-[#5b8506]">Enter OTP</h2>
 
@@ -51,7 +86,7 @@ const Otp = () => {
               inputMode="numeric"
               maxLength="1"
               value={digit}
-              onChange={e => handleChange(e, index)}
+              onChange={e => handleChange(e.target.value, index)}
               onKeyDown={e => handleKeyDown(e, index)}
               className="w-12 h-12 sm:w-14 sm:h-14 text-center text-xl sm:text-2xl border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#5b8506] bg-white bg-opacity-80"
               aria-label={`OTP Digit ${index + 1}`}
@@ -59,7 +94,14 @@ const Otp = () => {
           ))}
         </div>
 
-        <p className="mb-4 text-white max-w-full sm:max-w-xs mx-auto text-xs sm:text-sm px-2">
+        <button
+          onClick={handleSubmit}
+          className="w-full py-2 sm:py-2.5 mb-4 bg-[#5b8506] text-white rounded-md text-sm sm:text-base font-semibold hover:bg-[#4a6e04] transition-all duration-200"
+        >
+          Submit
+        </button>
+
+        <p className="mb-2 text-white max-w-full sm:max-w-xs mx-auto text-xs sm:text-sm px-2">
           Didn't receive the code? You can resend it after 30 seconds.
         </p>
 

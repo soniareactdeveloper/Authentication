@@ -5,9 +5,6 @@ const upload = require('../../utils/multer')
 const authRouter = express.Router()
 
 
-
-
-
 authRouter.post("/register", register )
 authRouter.post('/verifyemail', verifyEmail)
 authRouter.post('/resend-otp', resendOtp)
