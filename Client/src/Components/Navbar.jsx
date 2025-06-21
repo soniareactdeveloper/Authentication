@@ -31,14 +31,21 @@ const Navbar = ({ user, onLogout }) => {
         {user && (
           <div className="hidden md:flex items-center gap-4">
             <div className="text-right">
-              <p className="font-semibold text-[#5b8506]">{user.name}</p>
+              <p className="font-semibold text-xs text-[#2b3911]">{user.fullname}</p>
               <p className="text-xs text-gray-500">{user.email}</p>
             </div>
-            <img
-              src={user.image}
-              alt="User"
-              className="w-10 h-10 rounded-full border-2 border-[#11C0D4]"
-            />
+              {user.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt="User Avatar"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-[#06853d] text-white flex items-center justify-center text-lg font-semibold">
+                    {user.fullname?.charAt(0).toUpperCase()}
+                  </div>
+                )}
+
             <button
               onClick={onLogout}
               className="bg-[#0A2A3C] text-white px-4 py-1.5 rounded hover:bg-[#5b8506] transition text-sm font-medium"

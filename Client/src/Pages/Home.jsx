@@ -1,15 +1,17 @@
-// pages/Home.jsx
-import React from 'react';
 import Lottie from "lottie-react";
 import welcomeAni from '../assets/animation/HomeAni.json';
 import Navbar from '../Components/Navbar';
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router";
 
 const Home = () => {
-  const user = {
-    name: 'Sonia Akter',
-    email: 'sonia@example.com',
-    image: 'https://i.pravatar.cc/40?img=5',
-  };
+  const user =useSelector((state) => state.auth.value)
+
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
 
   const handleLogout = () => {
     alert('Logged out!');
