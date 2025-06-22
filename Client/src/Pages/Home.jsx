@@ -1,11 +1,14 @@
 import Lottie from "lottie-react";
 import welcomeAni from '../assets/animation/HomeAni.json';
 import Navbar from '../Components/Navbar';
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router";
+import { logOutData } from "../store/slices/authSlice";
 
 const Home = () => {
   const user =useSelector((state) => state.auth.value)
+   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
 
   if (!user) {
@@ -14,7 +17,9 @@ const Home = () => {
 
 
   const handleLogout = () => {
-    alert('Logged out!');
+    dispatch(logOutData());          
+    localStorage.removeItem('user'); 
+    navigate('/login'); 
   };
 
   return (

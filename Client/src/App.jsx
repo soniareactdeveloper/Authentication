@@ -7,6 +7,8 @@ import NotFound from './Pages/NotFound'
 import ForgetPass from './Pages/ForgetPass'
 import Otp from './Pages/Otp'
 import ResetPass from './Components/ResetPass'
+import Profile from './Components/Profile'
+
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgetPass />} />
         <Route path="/reset-password/:randomString" element={<ResetPass />} />
         <Route path="/otp/:email" element={<Otp />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path = "*" element={<NotFound/>}/>
       </Routes>
     </>

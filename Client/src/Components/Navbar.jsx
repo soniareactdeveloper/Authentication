@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaUserCircle, FaBars, FaTimes } from 'react-icons/fa';
-import { Link } from 'react-router'; 
+import { Link } from 'react-router';
 
 const Navbar = ({ user, onLogout }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -10,7 +10,6 @@ const Navbar = ({ user, onLogout }) => {
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2 text-xl font-bold text-[#0A2A3C]">
-          <FaUserCircle className="text-2xl text-[#11C0D4]" />
           <Link to="/" className="hover:text-[#5b8506] transition">Auth Portal</Link>
         </div>
 
@@ -30,21 +29,26 @@ const Navbar = ({ user, onLogout }) => {
         {/* User info & Logout on desktop */}
         {user && (
           <div className="hidden md:flex items-center gap-4">
-            <div className="text-right">
-              <p className="font-semibold text-xs text-[#2b3911]">{user.fullname}</p>
-              <p className="text-xs text-gray-500">{user.email}</p>
-            </div>
+            <Link 
+              to="/profile" 
+              className="flex items-center gap-4 cursor-pointer hover:opacity-80 transition"
+            >
+              <div className="text-right">
+                <p className="font-semibold text-xs text-[#2b3911]">{user.fullname}</p>
+                <p className="text-xs text-gray-500">{user.email}</p>
+              </div>
               {user.avatar ? (
-                  <img
-                    src={user.avatar}
-                    alt="User Avatar"
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-[#06853d] text-white flex items-center justify-center text-lg font-semibold">
-                    {user.fullname?.charAt(0).toUpperCase()}
-                  </div>
-                )}
+                <img
+                  src={user.avatar}
+                  alt="User Avatar"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-[#06853d] text-white flex items-center justify-center text-lg font-semibold">
+                  {user.fullname?.charAt(0).toUpperCase()}
+                </div>
+              )}
+            </Link>
 
             <button
               onClick={onLogout}
@@ -58,7 +62,7 @@ const Navbar = ({ user, onLogout }) => {
         {/* Mobile Menu Toggle */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-2xl text-[#0A2A3C]"
+          className="md:hidden text-2xl text-[#079c72]"
           aria-label="Toggle menu"
         >
           {menuOpen ? <FaTimes /> : <FaBars />}
@@ -79,12 +83,28 @@ const Navbar = ({ user, onLogout }) => {
               </>
             ) : (
               <>
-                <li className="flex items-center gap-2">
-                  <img src={user.image} alt="User" className="w-8 h-8 rounded-full border-2 border-[#11C0D4]" />
-                  <div>
-                    <p className="font-semibold text-[#5b8506]">{user.name}</p>
-                    <p className="text-xs text-gray-500">{user.email}</p>
-                  </div>
+                <li>
+                  <Link
+                    to="/profile"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-2 hover:opacity-80 transition"
+                  >
+                    {user.avatar ? (
+                      <img
+                        src={user.avatar}
+                        alt="User"
+                        className="w-8 h-8 rounded-full border-2 border-[#11C0D4]"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-[#06853d] text-white flex items-center justify-center text-lg font-semibold border-2 border-[#11C0D4]">
+                        {user.fullname?.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <div>
+                      <p className="font-semibold text-[#5b8506]">{user.fullname}</p>
+                      <p className="text-xs text-gray-500">{user.email}</p>
+                    </div>
+                  </Link>
                 </li>
                 <li>
                   <button
@@ -92,7 +112,7 @@ const Navbar = ({ user, onLogout }) => {
                       onLogout();
                       setMenuOpen(false);
                     }}
-                    className="bg-[#0A2A3C] text-white w-full py-2 rounded hover:bg-[#5b8506] transition"
+                    className="bg-[#078f22] text-white w-full py-2 rounded hover:bg-[#5b8506] transition"
                   >
                     Logout
                   </button>

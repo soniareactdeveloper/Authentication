@@ -1,5 +1,5 @@
 const express = require('express')
-const apiRouter = require('./api')
+const apiRouter = require("./api")
 const router = express.Router()
 
 router.use(process.env.BASE_URL, apiRouter)

@@ -194,7 +194,6 @@ const resetPassword = async (req, res) =>{
     if(!newPass) return res.status(400).json({error : "password is required"})
 
     const existingUser = await userSchema.findOne({email, resetPass : randomString, resetPassExpiredAt : {$gt : Date.now()}})
-    console.log(existingUser)
     if(!existingUser) return res.status(400).json({error : "user is not valid"})
 
 
@@ -230,11 +229,11 @@ const updateUser = async(req, res) =>{
       // Upload new avatar
       const uploadResult = await cloudinary.uploader.upload(req.file.path)
       existingUser.avatar = uploadResult.url
-      fs.unlinkSync(req.file.path) // Remove local file
+      fs.unlinkSync(req.file.path) 
     }
      await existingUser.save();
 
-    return res.status(200).json({ message: "User updated successfully", existingUser});
+    return res.status(200).json(existingUser);
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }

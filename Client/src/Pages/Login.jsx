@@ -4,16 +4,16 @@ import { authService } from '../services/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { logUserData } from '../store/slices/authSlice';
-
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = () => {
   const [logData , setLogData] = useState({
     email: "",
     password: ""
   })
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth.value)
-
 
 
   const handleSubmit = async (e) => {
@@ -58,14 +58,22 @@ const Login = () => {
             className="w-full mb-4 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#5b8506]"
           />
 
-          <label className="block mb-2 font-semibold" htmlFor="password">Password</label>
-          <input
-            onChange={(e) => setLogData((prev) => ({ ...prev, password: e.target.value }))}
-            type="password"
-            id="password"
-            placeholder="Enter your password"
-            className="w-full mb-2 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#5b8506]"
-          />
+           <label className="block mb-2 font-semibold" htmlFor="password">Password</label>
+            <div className="relative mb-4">
+              <input
+                onChange={(e) => setLogData((prev) => ({ ...prev, password: e.target.value }))}
+                type={showPassword ? "text" : "password"}
+                id="password"
+                placeholder="Create a password"
+                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#5b8506] pr-10"
+              />
+              <span
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute top-2.5 right-3 text-gray-600 cursor-pointer"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
 
           <div className="text-right mb-6">
             <a href="/forgot-password" className="text-sm text-[#5b8506] hover:underline">

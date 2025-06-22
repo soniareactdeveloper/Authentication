@@ -28,7 +28,7 @@ const forgotPasswordTemplate = (randomString, email) => {
         <p>Hello,</p>
         <p>We received a request to reset your password. Click the button below to proceed. This link is valid for <strong> 5 minutes</strong>.</p>
 
-        <a href="${process.env.LOCAL_API_URL}/api/v1/auth/reset-password/${randomString}?email=${email}" 
+        <a href="http://localhost:5173/reset-password/${randomString}?email=${email}" 
            target="_blank" 
            style="display: inline-block; padding: 12px 25px; background-color: #5C2E91; color: #ffffff; text-decoration: none; border-radius: 5px; margin: 20px 0;">
           Reset Password

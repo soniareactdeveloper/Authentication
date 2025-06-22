@@ -2,19 +2,15 @@ const express = require('express')
 const { register, login, verifyEmail, resendOtp, forgetPassword, resetPassword, updateUser } = require('../../controllers/authController')
 const authMiddleware = require('../../Middlewares/authMiddleware')
 const upload = require('../../utils/multer')
-const authRouter = express.Router()
+const router = express.Router()
 
 
-authRouter.post("/register", register )
-authRouter.post('/verifyemail', verifyEmail)
-authRouter.post('/resend-otp', resendOtp)
-authRouter.post('/login', login)
-authRouter.post("/forget-password", forgetPassword)
-authRouter.post("/reset-password/:randomString", resetPassword)
+router.post("/register", register )
+router.post('/verifyemail', verifyEmail)
+router.post('/resend-otp', resendOtp)
+router.post('/login', login)
+router.post("/forget-password", forgetPassword)
+router.post("/reset-password/:randomString", resetPassword)
+router.post("/update-user",authMiddleware, upload.single('avatar'), updateUser)
 
-
-
-
-authRouter.post("/update-user",authMiddleware, upload.single('avatar'), updateUser)
-
-module.exports = authRouter 
+module.exports = router 

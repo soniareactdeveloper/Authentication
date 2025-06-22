@@ -1,9 +1,41 @@
 import { Link } from 'react-router';
+import { authService } from '../services/api';
+import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 
 const ForgetPass = () => {
+const [forgetData, setForgetData] = useState({
+  email : ""
+})
+
+
+
+
+const handleForgetPassword = async (e) => {
+  e.preventDefault()
+  try {
+    const res = await authService.forgetPassword(forgetData)
+    toast.success(res.message);
+    
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+}
+
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row overflow-hidden">
-      
+      {/* toast container */}
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            pauseOnHover
+            draggable
+            theme="light"
+          />
       {/* Left side - Form */}
       <div className="flex flex-col justify-center items-center w-full md:w-1/2 px-6 py-12 bg-white box-border h-screen overflow-hidden">
         <h2 className="text-3xl font-bold mb-6 text-[#5b8506]">Forgot your password?</h2>
@@ -11,9 +43,10 @@ const ForgetPass = () => {
           Enter your email address below and we'll send you a link to reset your password.
         </p>
 
-        <form className="w-full max-w-sm">
+        <form onSubmit={handleForgetPassword} className="w-full max-w-sm">
           <label className="block mb-2 font-semibold" htmlFor="email">Email Address</label>
           <input
+            onChange={(e) => setForgetData((prev) => ({ ...prev, email: e.target.value }))}
             type="email"
             id="email"
             placeholder="you@example.com"
