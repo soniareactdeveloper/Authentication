@@ -6,6 +6,7 @@ import Register from './Pages/Register'
 import NotFound from './Pages/NotFound'
 import ForgetPass from './Pages/ForgetPass'
 import Otp from './Pages/Otp'
+import ResetPass from './Components/ResetPass'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgetPass />} />
+        <Route path="/reset-password/:randomString" element={<ResetPass />} />
         <Route path="/otp/:email" element={<Otp />} />
         <Route path = "*" element={<NotFound/>}/>
       </Routes>
