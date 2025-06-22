@@ -6,6 +6,7 @@ import { updateUserThunk } from '../store/slices/authSlice';
 const Profile = () => {
   const dispatch = useDispatch();
   const [editMode, setEditMode] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const user = useSelector((state) => state.auth.value);
 
   const [userEditedData, setUserEditedData] = useState({
@@ -109,17 +110,28 @@ const Profile = () => {
               readOnly
             />
 
-            <input
-              type="password"
-              placeholder="New Password"
-              onChange={(e) =>
-                setUserEditedData((prev) => ({
-                  ...prev,
-                  password: e.target.value,
-                }))
-              }
-              className="w-full border border-green-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
-            />
+            {/* Password input with toggle */}
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                placeholder="New Password"
+                onChange={(e) =>
+                  setUserEditedData((prev) => ({
+                    ...prev,
+                    password: e.target.value,
+                  }))
+                }
+                className="w-full border border-green-300 px-3 py-2 pr-10 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-2.5 text-sm text-green-600 focus:outline-none"
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
+            </div>
+
 
             <div className="flex justify-between mt-6">
               <button

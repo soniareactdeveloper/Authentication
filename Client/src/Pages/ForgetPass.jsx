@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { authService } from '../services/api';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
@@ -7,8 +7,7 @@ const ForgetPass = () => {
 const [forgetData, setForgetData] = useState({
   email : ""
 })
-
-
+const navigate = useNavigate()
 
 
 const handleForgetPassword = async (e) => {
@@ -16,6 +15,9 @@ const handleForgetPassword = async (e) => {
   try {
     const res = await authService.forgetPassword(forgetData)
     toast.success(res.message);
+    setTimeout(() => {
+      navigate('/login')
+    }, 2000);
     
   } catch (error) {
     toast.error(error.response.data.error);

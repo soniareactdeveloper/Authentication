@@ -192,6 +192,7 @@ const resetPassword = async (req, res) =>{
   const {email} = req.query;
   try {
     if(!newPass) return res.status(400).json({error : "password is required"})
+    if (!isValidPassword(newPass)) return res.status(400).json({ error: "Password must be 8+ chars with uppercase, lowercase, number & symbol." });
 
     const existingUser = await userSchema.findOne({email, resetPass : randomString, resetPassExpiredAt : {$gt : Date.now()}})
     if(!existingUser) return res.status(400).json({error : "user is not valid"})
